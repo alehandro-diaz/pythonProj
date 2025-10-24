@@ -30,6 +30,22 @@ def visualize(image_path, tensor_image):
     plt.savefig("visualize.jpg", dpi=1600, bbox_inches='tight')
 
 
+
+def preprocess_image(image_path):
+    image = Image.open(image_path)
+    transform = t.Compose([
+        t.Grayscale(num_output_channels=1),
+        t.Resize((128, 128)),
+        t.ToTensor(),
+        t.Normalize(mean=[0.5], std=[0.5])
+    ])
+    tensor_image = transform(image)
+    to_pil = ToPILImage()
+    final_image = to_pil(tensor_image)
+    final_image.save(f'images/{image}.jpg')
+    return tensor_image
+
+
 # Photo
 rand_folder = random.randint(1, 7)
 folder = f'data/DATASET/train/{rand_folder}'
@@ -48,6 +64,7 @@ photo_data = list(photo.getdata())
 # photo
 
 # pytorch
+
 transform = t.Compose([
     t.Grayscale(num_output_channels=1),
     t.Resize((128, 128)),
@@ -56,6 +73,7 @@ transform = t.Compose([
 ])
 
 transform_image = transform(photo)
+
 # print(transform_image)
 
 data = pd.read_csv('data/train_labels.csv')
@@ -78,4 +96,5 @@ plt.title('Data')
 plt.legend()
 # plt.savefig("plot.jpg", dpi=1600, bbox_inches='tight')
 
-visualize(image_path, transform_image)
+# visualize(image_path, transform_image)
+preprocess_image(image_path)
