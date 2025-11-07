@@ -22,7 +22,7 @@ def visualize(image_path, tensor_image):
     axes[1].set_title("Grayscale")
     axes[1].axis("off")
 
-    axes[2].imshow(final_image)
+    axes[2].imshow(final_image, cmap="gray")
     axes[2].set_title("После преобразований")
     axes[2].axis("off")
 
@@ -35,7 +35,7 @@ def preprocess_image(image_path):
     image = Image.open(image_path)
     transform = t.Compose([
         t.Grayscale(num_output_channels=1),
-        t.Resize((128, 128)),
+        t.Resize((100, 100)),
         t.ToTensor(),
         t.Normalize(mean=[0.5], std=[0.5])
     ])
@@ -67,7 +67,7 @@ photo_data = list(photo.getdata())
 
 transform = t.Compose([
     t.Grayscale(num_output_channels=1),
-    t.Resize((128, 128)),
+    t.Resize((100, 100)),
     t.ToTensor(),
     t.Normalize(mean=[0.5], std=[0.5])
 ])
@@ -96,5 +96,5 @@ plt.title('Data')
 plt.legend()
 # plt.savefig("plot.jpg", dpi=1600, bbox_inches='tight')
 
-# visualize(image_path, transform_image)
+visualize(image_path, transform_image)
 preprocess_image(image_path)
