@@ -21,8 +21,7 @@ def train_epoch(model, loader, optimizer, loss_fn, device='cuda'):
         
         total_loss += loss.item()
         
-        predictions = output.argmax(dim=1) if output.dim() > 1 else output.round()
-        all_predictions.extend(predictions.cpu().detach().numpy())
+        all_predictions.extend(output.argmax(1).cpu().detach().numpy())
         all_targets.extend(target.cpu().detach().numpy())
     
     avg_loss = total_loss / len(loader)
@@ -47,9 +46,8 @@ def evaluate_epoch(model, loader, loss_fn, device='cuda'):
             
             total_loss += loss.item()
             
-            predictions = output.argmax(dim=1) if output.dim() > 1 else output.round()
-            all_predictions.extend(predictions.cpu().numpy())
-            all_targets.extend(target.cpu().numpy())
+            all_predictions.extend(output.argmax(1).cpu().detach().numpy())
+            all_targets.extend(target.cpu().detach().numpy())
     
     avg_loss = total_loss / len(loader)
     accuracy = accuracy_score(all_targets, all_predictions)

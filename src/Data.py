@@ -29,7 +29,6 @@ train_loader = DataLoader(
     batch_size=32,
     shuffle=True,
     num_workers=2,
-    pin_memory=True
 )
 
 test_loader = DataLoader(
@@ -37,5 +36,4 @@ test_loader = DataLoader(
     batch_size=32,
     shuffle=False,
     num_workers=2,
-    pin_memory=True
 )
