@@ -5,13 +5,15 @@ import epochs as epo
 import Data as dt
 import plots as plt
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 class SimpleFcModel(nn.Module):
     def __init__(self, num_classes, img_size):
         super().__init__()
 
         H, W = img_size
         input_dim = 1 * H * W
-        self.flatten = nn.Flatten
+        self.flatten = nn.Flatten()
         self.fc1 = nn.Linear(input_dim, 512)
         self.fc2 = nn.Linear(512, num_classes)
         self.relu = nn.ReLU()
@@ -25,7 +27,7 @@ class SimpleFcModel(nn.Module):
 
 
 img_size = (100, 100)
-model = SimpleFcModel(7, img_size).to(device='cuda')
+model = SimpleFcModel(7, img_size).to(device)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=1e-4)
@@ -41,8 +43,8 @@ history = {
 
 for epoch in range(n_epoch):
     print(f"\nEPOCH {epoch+1}/{n_epoch}")
-    train_loss, train_acc, train_f1 = epo.train_epoch(model, dt.train_loader, optimizer, criterion, device='cuda')
-    test_loss, test_acc, test_f1 = epo.evaluate_epoch(model, dt.test_loader, optimizer, criterion, device='cuda')
+    train_loss, train_acc, train_f1 = epo.train_epoch(model, dt.train_loader, optimizer, criterion, device)
+    test_loss, test_acc, test_f1 = epo.evaluate_epoch(model, dt.test_loader, criterion, device)
 
 history["train_loss"].append(train_loss)
 history["test_loss"].append(test_loss)

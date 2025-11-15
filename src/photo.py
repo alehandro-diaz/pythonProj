@@ -96,5 +96,5 @@ plt.title('Data')
 plt.legend()
 # plt.savefig("plot.jpg", dpi=1600, bbox_inches='tight')
 
-visualize(image_path, transform_image)
-preprocess_image(image_path)
+# visualize(image_path, transform_image)
+# preprocess_image(image_path)
