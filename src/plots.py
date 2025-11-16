@@ -1,22 +1,33 @@
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 def plot_history(history):
     epochs = range(1, len(history['train_loss']) + 1)
 
-    plt.figure(figsize=(14, 5))
-    plt.subplot(1, 3, 1)
-    plt.plot(epochs, history['train_loss'], label='Train Loss')
-    plt.plot(epochs, history['test_loss'], label='Test Loss')
-    plt.legend(); plt.title('Loss')
+    print("Проверка данных:")
+    print(f"Train loss: {history['train_loss']}")
+    print(f"Test loss: {history['test_loss']}")
+    print(f"Train acc: {history['train_acc']}")
+    print(f"Test acc: {history['test_acc']}")
+    print(f"Train f1: {history['train_f1']}")
+    print(f"Test f1: {history['test_f1']}")
 
-    plt.subplot(1, 3, 2)
-    plt.plot(epochs, history['train_acc'], label='Train Acc')
-    plt.plot(epochs, history['test_acc'], label='Test Acc')
-    plt.legend(); plt.title('Accuracy')
-
-    plt.subplot(1, 3, 3)
-    plt.plot(epochs, history['train_f1'], label='Train F1')
-    plt.plot(epochs, history['test_f1'], label='Test F1')
-    plt.legend(); plt.title('F1 Score')
-
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+    
+    ax1.plot(epochs, history['train_loss'], label='Train Loss', marker='o')
+    ax1.plot(epochs, history['test_loss'], label='Test Loss', marker='o')
+    ax1.legend(); ax1.set_title('Loss')
+    ax1.set_xlabel('Epochs'); ax1.set_ylabel('Loss')
+    
+    ax2.plot(epochs, history['train_acc'], label='Train Acc', marker='o')
+    ax2.plot(epochs, history['test_acc'], label='Test Acc', marker='o')
+    ax2.legend(); ax2.set_title('Accuracy')
+    ax2.set_xlabel('Epochs'); ax2.set_ylabel('Accuracy')
+    
+    ax3.plot(epochs, history['train_f1'], label='Train F1', marker='o')
+    ax3.plot(epochs, history['test_f1'], label='Test F1', marker='o')
+    ax3.legend(); ax3.set_title('F1 Score')
+    ax3.set_xlabel('Epochs'); ax3.set_ylabel('F1 Score')
+    
+    plt.yscale('log')
+    plt.tight_layout()
     plt.savefig('plots/plot.jpg')
