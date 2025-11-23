@@ -28,39 +28,44 @@ class SimpleFcModel(nn.Module):
         x = self.fc2(x)
         x = self.relu(x)
         return x
-    
+
+#Создание свёрточной модели нейросети    
 class SimpleCNNModel(nn.Module):
-    def __init__(self):
+    # инициализация
+    def __init__(self, img_size, num_classes):
         super().__init__()
 
-        self.feauter_extractor = nn.Sequential(
-            nn.Conv2d(1, 16, 3, 1, 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2),
+        self.feature_extractor = nn.Sequential(
+            nn.Conv2d(1, 16, 3, 1, 1),#Делает карту принаков. Размер тензора (16, 100, 100)
+            nn.ReLU(),#Слой активатор, все отрицательные веса становяться нулями
+            nn.MaxPool2d(2, 2), #меняет размер тензора, размер становиться (16, 50, 50) 
 
-            nn.Conv2d(16, 32, 3, 1, 1),
+            nn.Conv2d(16, 32, 3, 1, 1), # здесь размер тензора становиться (32, 50, 50)
             nn.ReLU(),
-            nn.MaxPool2d(2, 2)
+            nn.MaxPool2d(2, 2) # а тут (32, 25, 25)
         )
-
-        self.classfier = nn.Sequential(
+        H = img_size[0] // 4
+        W = img_size[1] // 4
+        dim = 32 * H * W 
+        self.classifier = nn.Sequential(
             nn.Flatten(),
-            #nn.Linear(, 7)
+            nn.Linear(dim, num_classes)
         )
 
     def forward(self, x):
-        x = self.feauter_extractor(x)
-        x = self.classfier(x)
+        x = self.feature_extractor(x)
+        x = self.classifier(x)
         return x
 
 
 #инициализируем размер изображения и саму модель
 img_size = (100, 100)
-model = SimpleFcModel(7, img_size).to(device)
+#model = SimpleFcModel(7, img_size).to(device)
+model = SimpleCNNModel(img_size, 7).to(device)
 
  #добавляем оптимизаторы
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=1e-4)
+optimizer = optim.Adam(model.parameters(), lr=1e-5)
 
 #переменные для кол-ва эпох и оценки
 n_epoch = 50
@@ -77,14 +82,9 @@ history = {
 for epoch in range(n_epoch):
     print(f"\nEPOCH {epoch+1}/{n_epoch}")
     train_loss, train_acc, train_f1 = epo.train_epoch(model, dt.train_loader, optimizer, criterion, device)
-    print(f"Train loss: {train_loss}")
-    print(f"Train accuracy: {train_acc}")
-    print(f"Train f1: {train_f1}")
+    
     test_loss, test_acc, test_f1 = epo.evaluate_epoch(model, dt.test_loader, criterion, device)
-    print(f"Test loss: {test_loss}")
-    print(f"Test accyracy: {test_acc}")
-    print(f"Test f1: {test_f1}")
-
+    
     history["train_loss"].append(train_loss)
     history["test_loss"].append(test_loss)
     history["train_f1"].append(train_f1)
@@ -95,16 +95,10 @@ for epoch in range(n_epoch):
     if test_f1 > best_f1:
         best_f1 = test_f1
         best_epoch = epoch
-        torch.save(model.state_dict(), "models/best_model_fc.pth")
+        torch.save(model.state_dict(), "models/best_model_fc2.pth")
         print(f"Epoch: {epoch+1}, F1: {best_f1:.3f}")
 
 print(f"Best model: Epoch {best_epoch+1}, F1: {best_f1:.3f}")
-
-#вывод оценки test_f1 и train_f1
-# print(f"Train F1: {train_f1:.3f} | Test F1: {test_f1:.3f}")
-# if test_f1 > best_f1:
-#     best_f1 = test_f1
-#     torch.save(model.state_dict(), "models/best_model_fc.pth")
 
 #сохранение графика
 plt.plot_history(history)

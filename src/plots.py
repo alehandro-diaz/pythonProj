@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 def plot_history(history):
     epochs = range(1, len(history['train_loss']) + 1)
 
-    print("Проверка данных:")
-    print(f"Train loss: {history['train_loss']}")
-    print(f"Test loss: {history['test_loss']}")
-    print(f"Train acc: {history['train_acc']}")
-    print(f"Test acc: {history['test_acc']}")
-    print(f"Train f1: {history['train_f1']}")
-    print(f"Test f1: {history['test_f1']}")
+    # print("Проверка данных:")
+    # print(f"Train loss: {history['train_loss']}")
+    # print(f"Test loss: {history['test_loss']}")
+    # print(f"Train acc: {history['train_acc']}")
+    # print(f"Test acc: {history['test_acc']}")
+    # print(f"Train f1: {history['train_f1']}")
+    # print(f"Test f1: {history['test_f1']}")
 
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
     
@@ -30,4 +30,4 @@ def plot_history(history):
     
     plt.yscale('log')
     plt.tight_layout()
-    plt.savefig('plots/plot.jpg')
+    plt.savefig('plots/plot2.jpg')
