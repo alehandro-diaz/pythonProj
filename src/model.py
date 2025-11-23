@@ -36,11 +36,11 @@ class SimpleCNNModel(nn.Module):
         super().__init__()
 
         self.feature_extractor = nn.Sequential(
-            nn.Conv2d(1, 32, 3, 1, 1),#Делает карту принаков. Размер тензора (16, 100, 100)
+            nn.Conv2d(1, 16, 5, 1, 2),#Делает карту принаков. Размер тензора (16, 100, 100)
             nn.ReLU(),#Слой активатор, все отрицательные веса становяться нулями
             nn.MaxPool2d(2, 2), #меняет размер тензора, размер становиться (16, 50, 50) 
 
-            nn.Conv2d(32, 64, 3, 1, 1), # здесь размер тензора становиться (32, 50, 50)
+            nn.Conv2d(16, 32, 5, 1, 2), # здесь размер тензора становиться (32, 50, 50)
             nn.ReLU(),
             nn.MaxPool2d(2, 2), # а тут (32, 25, 25)
 
@@ -50,7 +50,7 @@ class SimpleCNNModel(nn.Module):
         )
         H = img_size[0] // 4
         W = img_size[1] // 4
-        dim = 64 * H * W 
+        dim = 32 * H * W 
         self.classifier = nn.Sequential(
             nn.Flatten(),
             nn.Linear(dim, num_classes)
@@ -99,7 +99,7 @@ for epoch in range(n_epoch):
     if test_f1 > best_f1:
         best_f1 = test_f1
         best_epoch = epoch
-        torch.save(model.state_dict(), "models/best_model_cnn3.pth")
+        torch.save(model.state_dict(), "models/best_model_cnn4.pth")
         print(f"Epoch: {epoch+1}, F1: {best_f1:.3f}")
 
 print(f"Best model: Epoch {best_epoch+1}, F1: {best_f1:.3f}")
