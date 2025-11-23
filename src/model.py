@@ -36,20 +36,20 @@ class SimpleCNNModel(nn.Module):
         super().__init__()
 
         self.feature_extractor = nn.Sequential(
-            nn.Conv2d(1, 16, 3, 1, 1),#Делает карту принаков. Размер тензора (16, 100, 100)
+            nn.Conv2d(1, 32, 3, 1, 1),#Делает карту принаков. Размер тензора (16, 100, 100)
             nn.ReLU(),#Слой активатор, все отрицательные веса становяться нулями
             nn.MaxPool2d(2, 2), #меняет размер тензора, размер становиться (16, 50, 50) 
 
-            nn.Conv2d(16, 32, 3, 1, 1), # здесь размер тензора становиться (32, 50, 50)
+            nn.Conv2d(32, 64, 3, 1, 1), # здесь размер тензора становиться (32, 50, 50)
             nn.ReLU(),
             nn.MaxPool2d(2, 2), # а тут (32, 25, 25)
 
-            nn.Conv2d(32, 64, 3, 1, 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2)
+            # nn.Conv2d(32, 64, 3, 1, 1),
+            # nn.ReLU(),
+            # nn.MaxPool2d(2, 2)
         )
-        H = img_size[0] // 8
-        W = img_size[1] // 8
+        H = img_size[0] // 4
+        W = img_size[1] // 4
         dim = 64 * H * W 
         self.classifier = nn.Sequential(
             nn.Flatten(),
