@@ -30,4 +30,4 @@ def plot_history(history):
     
     plt.yscale('log')
     plt.tight_layout()
-    plt.savefig('plots/plot5.jpg')
+    plt.savefig('plots/plot7.jpg')
