@@ -8,14 +8,12 @@ train_path = 'data/DATASET/train'
 test_path = 'data/DATASET/test'
 
 train_transforms = transforms.Compose([
-    transforms.Grayscale(num_output_channels=1),
     transforms.Resize((100, 100)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.5], std=[0.5])
 ])
 
 test_transforms = transforms.Compose([
-    transforms.Grayscale(num_output_channels=1),
     transforms.Resize((100, 100)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.5], std=[0.5])

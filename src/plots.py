@@ -64,4 +64,4 @@ def plot_history(history, class_names=None):
     
     plt.yscale('log')
     plt.tight_layout()
-    plt.savefig('plots/plot15.jpg')
+    plt.savefig('plots/plot_3_channels2.jpg')
